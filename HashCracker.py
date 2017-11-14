@@ -4,6 +4,30 @@ from urllib import urlopen , urlencode
 from re import search
 import sys
 
+#Utility Functions for Cracking Hash
+
+def crackSHA256():
+    responseHtml = urlopen("http://md5decrypt.net/Api/api.php?hash="+hashVal+"&hash_type=sha256&email=nitinsharmarks_cse13@its.edu.in&code=07014c0e89b17ef2")
+    responseString = responseHtml.read()
+    if len(responseString) > 0:
+        print "\n\033[1;32m[+] Hash Cracked By md5decrypt.net: \033[1;m", responseString
+        sys.exit()
+    else:
+        print "\033[1;31m[-]\033[1;m Hash Not Found"
+        sys.exit()
+
+def crackSHA():
+    responseHtml = urlopen("http://md5decrypt.net/Api/api.php?hash="hashVal+"&hash_type=sha1&email=nitinsharmarks_cse13@its.edu.in&code=07014c0e89b17ef2")
+    responseString = responseHtml.read()
+    if len(responseString) >0 :
+        print "\n\033[1;32m[+] Hash Cracked By md5decrypt.net: \033[1;m" , responseString
+        sys.exit()
+    else:
+        print "\033[1;31m[-]\033[1;m Hash Not Found"
+        sys.exit()
+
+
+
 #print all Intro banners
 
 
@@ -51,12 +75,4 @@ else:
     print "\033[1;31m[-]\033[1;31m This Hash Is Not Supported."
 
 
-def crackSHA256():
-    responseHtml = urlopen("http://md5decrypt.net/Api/api.php?hash="+hashVal+"&hash_type=sha256&email=nitinsharmarks_cse13@its.edu.in&code=07014c0e89b17ef2"
-    responseString = responseHtml.read()
-    if len(responseString) > 0:
-        print "\n\033[1;32m[+] Hash Cracked By md5decrypt.net: \033[1;m", responseString
-        sys.exit()
-    else:
-        print "\033[1;31m[-]\033[1;m Hash Not Found"
-        sys.exit()
+
