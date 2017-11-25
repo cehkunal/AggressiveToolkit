@@ -96,6 +96,8 @@ elif ip == 1:
         else:
             packet = Ip
 
+
+
 pktSize = 0
 pktByte = bytes(packet)
 for a in pktByte:
@@ -107,7 +109,13 @@ count = (trafficSize * 1024)/pktSize
 print str(count) + "Packets will be generated \n"
 
 while count >0:
-    sendp(packet)
-    if count == 1:
-        packet.show()
-    count -= 1
+    if ether == 1:
+        sendp(packet)
+        if count == 1:
+            packet.show()
+        count -= 1
+    else:
+        send(packet)
+        if count ==1:
+            packet.show()
+        count -= 1
