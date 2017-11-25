@@ -1,16 +1,16 @@
 #!/usr/bin/python
 
-sipMsg = "Enter the Source IP\n"
-dipMsg = "Enter the Destination IP\n"
-protocolMsg = "Choose the Protocol\n"
-protocols = ["1.ARP","2.IP","3.TCP","4.UDP","5.ICMP","6.Done"]
-sportMsg = "Enter the Source Port\n"
-dportMsg = "Enter the Destination Port\n"
-smacMsg = "Enter the source MAC Address\n"
-dmacMsg = "Enter the destination MAC Address\n"
-dataMsg = "Enter the Data Part"
-getTTLMsg = "Enter the TTL value"
-getRequestTypeMsg = "Echo-Request(1) or Echo-Reply(2)"
+sipMsg = "Enter the Source IP\nDefault: 127.0.0.1\n"
+dipMsg = "Enter the Destination IP\nDefault: 127.0.0.1" 
+protocolMsg = "Choose the Protocol Numbers separated by space\n"
+protocols = ["1.Ether","2.IP","3.TCP","4.UDP","5.ICMP"]
+sportMsg = "Enter the Source Port\nDefault: 20\n"
+dportMsg = "Enter the Destination Port\nDefault: 80\n"
+smacMsg = "Enter the source MAC Address\nDefault: Machine's Original MAC\nFormat: aa:aa:bb:bb:aa:aa\n"
+dmacMsg = "Enter the destination MAC Address\nDefault: 0.0.0.0\nFormat: aa:bb:aa:bb:aa:bb\n"
+dataMsg = "Enter the Data Part\nDefault: NULL\n"
+getTTLMsg = "Enter the TTL value\nDefault: 64\n"
+getRequestTypeMsg = "Echo-Request(1) or Echo-Reply(2)\nDefault: Echo-Request\n"
 
 def getRequestType():
     reqType = raw_input(getRequestTypeMsg)
@@ -33,29 +33,16 @@ def getProtocol():
     for p in protocols:
         print p 
     protocol = raw_input(protocolMsg)
-    if protocol == "1":
-        return "1.ARP"
-    elif protocol == "3":
-        return "3.TCP"
-    elif protocol == "4":
-        return "4.UDP"
-    elif protocol == "5":
-        return "5.ICMP"
-    elif protocol == "2":
-        return "2.IP"
-    elif protocol == "6":
-        return "break"
-    else:
-        return "Invalid Choice"
-
+    print protocol
+    return protocol
 
 def getSport():
-    sport = raw_input(sportMsg)
+    sport = int(raw_input(sportMsg))
     return sport
 
 
 def getDport():
-    dport = raw_input(dportMsg)
+    dport = int(raw_input(dportMsg))
     return dport
 
 
@@ -74,7 +61,12 @@ def getData():
 
 def getTTL():
     ttl = raw_input(getTTLMsg)
-    return ttl
+    if ttl == "":
+        ttl = 0
+        return ttl
+    else:
+        newttl = int(ttl)
+    return newttl
 
 def getSip():
     sip = raw_input(sipMsg)

@@ -1,61 +1,113 @@
 #!/usr/bin/python
 from escapyUtilities import *
 from scapy.all import *
-
+from uuid import getnode as get_mac
 
 # Print Banner
 
 # Print Instructions
-print "Press Enter For Choosing  Default Values"
-
-# Craft The Packet
-data = getData()
-pingFlag=0
-
-smac
+print "Leave Blank For Choosing  Default Values"
 
 
 
-while True:
-    protocol = getProtocol()
-    if "ARP" in protocol:
-        smac = getsmac()
-        dmac = getdmac()
-    elif "TCP" in protocol:
-        sport = getSport()
-        dport = getDport()
-    elif "UDP" in protocol:
-        sport = getSport()
-        dport = getDport()
-    elif "IP" in protocol:
-        sip = getSip()
-        dip = getDip()
-        ttl = getTTL()
-    elif "ICMP" in protocol:
-        reqType = getRequestType()
-        if "Request" in reqType:
-            reqType = 8
-        elif "Response" in reqType:
-            reqType = 0
-        pingFlag=1
-    elif "break" in protocol:
-        break
-    else:
-        print "Invalid Usage"
+#Initial Values
+smac = get_mac() 
+dmac = "0.0.0.0"
+sip = "127.0.0.1"
+dip = "127.0.0.1"
+sport = "20"
+dport = "80"
+ttl = "64"
+reqType = "0"
+ether = 0
+tcp = 0
+udp = 0
+ip = 0
+icmp = 0
+
+protocol = getProtocol()
+print protocol
+if "1" in protocol:
+    smac = getsmac()
+    dmac = getdmac()
+    ether = 1
+if "2" in protocol:
+    sip = getSip()
+    dip = getDip()
+    ttl = getTTL()
+    ip = 1
+if "3" in protocol:
+    sport = getSport()
+    dport = getDport()
+    tcp = 1
+elif "4" in protocol:
+    sport = getSport()
+    dport = getDport()
+    udp = 1
+if "5" in protocol:
+    reqType = getRequestType()
+    if "Request" in reqType:
+        reqType = 8
+    elif "Response" in reqType:
+        reqType = 0
+    icmp=1
 
 
-count = int(raw_input("Enter the number of packets to be generated"))
+# Craft Packet according to Requirements
+if ether == 1:
+    Ether = Ether(src = smac , dst = dmac)
+if ip == 1:
+    Ip = IP(src = sip, dst = dip , ttl = ttl)
 
-pkt = IP()/ICMP()
+if tcp == 1:
+   Tcp = TCP(sport = sport , dport = dport)
+elif udp == 1:
+    Udp = UDP(sport = sport , dport = dport)
+elif tcp != 1:
+    if udp != 1: 
+        if icmp == 1:
+            Icmp = ICMP(code = reqType)
 
-if pingFlag==1:
-    pkt = Ether(dst=dmac,src=smac)/IP(src=sip,dst=dip,ttl=ttl)/ICMP(code=reqType)/data
-elif pingFlag == 0:
-    if "TCP" in protocol:
-        pkt = Ether(dst=dmac,src=smac)/IP(src=sip,dst=dip,ttl=ttl)/TCP(sport=sport, dport=dport)/data
-    elif "UDP" in protocol:
-        pkt = Ether(dst=dmac,src=smac)/IP(src=sip,dst=dip,ttl=ttl)/TCP(sport=sport, dport=dport)/data
-        
+#Generate Packet
+
+if ether == 1:
+    if ip == 1:
+        if tcp == 1:
+            packet = Ether/Ip/Tcp
+        elif udp == 1:
+            packet = Ether/Ip/Udp
+        elif icmp == 1:
+            packet = Ether/Ip/Icmp
+        else:
+            packet = Ether/Ip
+    elif tcp == 1:
+        packet = Ether/Tcp
+    elif udp == 1:
+        packet = Ether/Udp
+    elif icmp == 1:
+        packet = Ether/Icmp
+elif ip == 1:
+        if tcp == 1:
+            packet = Ip/Tcp
+        elif udp == 1:
+            packet = Ip/Udp
+        elif icmp == 1:
+            packet = Ip/Icmp
+        else:
+            packet = Ip
+
+pktSize = 0
+pktByte = bytes(packet)
+for a in pktByte:
+    pktSize += 1
+print "Size of a single packet is:" + str(pktSize) + "\n"
+
+trafficSize = int(raw_input("Enter the Size of Traffic to be generated in MB"))
+count = (trafficSize * 1024)/pktSize
+print str(count) + "Packets will be generated \n"
+
 while count >0:
-    send(pkt)
+    sendp(packet)
+    if count == 1:
+        packet.show()
     count -= 1
