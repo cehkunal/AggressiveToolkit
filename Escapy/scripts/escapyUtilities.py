@@ -1,16 +1,16 @@
 #!/usr/bin/python
 
-sipMsg = "Enter the Source IP\nDefault: 127.0.0.1\n"
-dipMsg = "Enter the Destination IP\nDefault: 127.0.0.1" 
-protocolMsg = "Choose the Protocol Numbers separated by space\n"
+sipMsg = "\033[1;96mEnter the Source IP\033[1;m\n\033[1;93mDefault: 127.0.0.1\n\033[1;m"
+dipMsg = "\033[1;96mEnter the Destination IP\033[1;m\n\033[1;93mDefault: 127.0.0.1\n\033[1;m" 
+protocolMsg = "\033[1;96mChoose the Protocol Numbers separated by space\n\033[1;m"
 protocols = ["1.Ether","2.IP","3.TCP","4.UDP","5.ICMP"]
-sportMsg = "Enter the Source Port\nDefault: 20\n"
-dportMsg = "Enter the Destination Port\nDefault: 80\n"
-smacMsg = "Enter the source MAC Address\nDefault: Machine's Original MAC\nFormat: aa:aa:bb:bb:aa:aa\n"
-dmacMsg = "Enter the destination MAC Address\nDefault: 0.0.0.0\nFormat: aa:bb:aa:bb:aa:bb\n"
-dataMsg = "Enter the Data Part\nDefault: NULL\n"
-getTTLMsg = "Enter the TTL value\nDefault: 64\n"
-getRequestTypeMsg = "Echo-Request(1) or Echo-Reply(2)\nDefault: Echo-Request\n"
+sportMsg = "\033[1;96mEnter the Source Port\033[1;m\n\033[1;93mDefault: 20\n\033[1;m"
+dportMsg = "\033[1;96mEnter the Destination Port\033[1;m\n\033[1;93mDefault: 80\n\033[1;m"
+smacMsg = "\033[1;96mEnter the source MAC Address\033[1;m\n\033[1;93mDefault: Machine's Original MAC\033[1;m\n\033[1;94mFormat: aa:aa:bb:bb:aa:aa\n\033[1;m"
+dmacMsg = "\033[1;96mEnter the destination MAC Address\033[1;m\n\033[1;93mDefault: aa:aa:aa:aa:aa:aa\033[1;m\n\033[1;94mFormat: aa:bb:aa:bb:aa:bb\n\033[1;m"
+dataMsg = "\033[1;96mEnter the Data Part\nDefault: NULL\n\033"
+getTTLMsg = "\033[1;96mEnter the TTL value\033[1;m\n\033[1;93mDefault: 64\n\033[1;m"
+getRequestTypeMsg = "\033[1;96mEcho-Request(1) or Echo-Reply(2)\033[1;m\n\033[1;93mDefault: Echo-Request\n\033[1;m"
 
 def getRequestType():
     reqType = raw_input(getRequestTypeMsg)
@@ -33,7 +33,6 @@ def getProtocol():
     for p in protocols:
         print p 
     protocol = raw_input(protocolMsg)
-    print protocol
     return protocol
 
 def getSport():
