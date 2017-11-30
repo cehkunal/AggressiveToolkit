@@ -5,12 +5,12 @@ from uuid import getnode as get_mac
 
 # Print Banner
 print((56 * '\033[31m-\033[1;m'))
-print "\033[1;32mESCAPY: : Made By Kunal \033[1;m"
+print "\033[1;32mNetwork Traffic Generator : Made By Group 4 \033[1;m"
 print((56 * '\033[31m-\033[1;m'))
 
 
 # Print Instructions
-print "Leave Blank For Choosing  Default Values"
+print "\033[1;93mLeave Blank For Choosing  Default Values\033[1;m"
 
 
 
@@ -31,28 +31,53 @@ icmp = 0
 
 protocol = getProtocol()
 print protocol
+
 if "1" in protocol:
     smac = getsmac()
     dmac = getdmac()
+    if smac == "":
+        smac = get_mac()
+    if dmac == "":
+        dmac = "0.0.0.0"
     ether = 1
+
 if "2" in protocol:
     sip = getSip()
     dip = getDip()
     ttl = getTTL()
+    if sip == "":
+        sip = "127.0.0.1"
+    if dip == "":
+        dip = "127.0.0.1"
+    if ttl == "":
+        ttl = 64
     ip = 1
+
 if "3" in protocol:
     sport = getSport()
     dport = getDport()
+    if sport == "":
+        sport = 20
+    if dport == "":
+        dport = 80
     tcp = 1
+
 elif "4" in protocol:
     sport = getSport()
     dport = getDport()
+    if sport == "":
+        sport = 20
+    if dport == "":
+        dport = 80
     udp = 1
+
 if "5" in protocol:
     reqType = getRequestType()
     if "Request" in reqType:
+        reqType = 0
+    elif "Reply" in reqType:
         reqType = 8
-    elif "Response" in reqType:
+    if reqType == "":
         reqType = 0
     icmp=1
 
@@ -91,14 +116,20 @@ if ether == 1:
     elif icmp == 1:
         packet = Ether/Icmp
 elif ip == 1:
-        if tcp == 1:
-            packet = Ip/Tcp
-        elif udp == 1:
-            packet = Ip/Udp
-        elif icmp == 1:
-            packet = Ip/Icmp
-        else:
-            packet = Ip
+    if tcp == 1:
+        packet = Ip/Tcp
+    elif udp == 1:
+        packet = Ip/Udp
+    elif icmp == 1:
+        packet = Ip/Icmp
+    else:
+        packet = Ip
+elif tcp == 1:
+    packet = IP()/Tcp
+elif udp == 1:
+    packet = IP()/Udp
+elif icmp == 1:
+    packet = IP()/Icmp
 
 
 
@@ -108,9 +139,13 @@ for a in pktByte:
     pktSize += 1
 print "Size of a single packet is:" + str(pktSize) + "\n"
 
-trafficSize = int(raw_input("Enter the Size of Traffic to be generated in MB"))
+trafficSize = raw_input("\033[1;94mEnter the Size of Traffic to be generated in MB\nDefault: 1 MB\033[1;m")
+if trafficSize == "":
+    trafficSize = 1
+else:
+    trafficSize = int(trafficSize)
 count = (trafficSize * 1024)/pktSize
-print str(count) + "Packets will be generated \n"
+print str(count) + "\033[1;92mPackets will be generated \n\033[1;m"
 
 while count >0:
     if ether == 1:

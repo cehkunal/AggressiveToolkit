@@ -37,12 +37,20 @@ def getProtocol():
     return protocol
 
 def getSport():
-    sport = int(raw_input(sportMsg))
+    sport = raw_input(sportMsg)
+    if sport == "":
+        sport = 20
+    else:
+        sport = int(sport)
     return sport
 
 
 def getDport():
-    dport = int(raw_input(dportMsg))
+    dport = raw_input(dportMsg)
+    if dport == "":
+        dport = 80
+    else:
+        dport = int(dport)
     return dport
 
 
@@ -62,7 +70,7 @@ def getData():
 def getTTL():
     ttl = raw_input(getTTLMsg)
     if ttl == "":
-        ttl = 0
+        ttl = 64 
         return ttl
     else:
         newttl = int(ttl)
